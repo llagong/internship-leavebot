@@ -11,4 +11,13 @@ bot.hears("test", (ctx) => {
   console.log(ctx.update);
 });
 
+bot.hears("hello", (ctx) => {
+  ctx.reply("world");
+});
+
+// /leave [Date]
+// /myleave
+// /unleave
+// /allleaves
+
 bot.launch();
