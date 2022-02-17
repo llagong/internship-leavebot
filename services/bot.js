@@ -4,7 +4,7 @@ const bot = new Telegraf(process.env.TELEGRAM_API_KEY);
 
 bot.start((ctx) => ctx.reply("Welcome"));
 
-let leaveLog = [];
+const leaveLog = [];
 
 const d = new Date();
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -27,9 +27,13 @@ bot.hears("date", (ctx) => {
 });
 
 bot.hears("/leave", (ctx) =>{
-  ctx.reply(dateNow);
-  leaveLog.push('userid')
+  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`);
+  leaveLog.push(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`)
   console.log(leaveLog);
+})
+
+bot.hears("/myleaves", (ctx) =>{
+  ctx.reply(leaveLog);
 })
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
