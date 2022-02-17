@@ -39,10 +39,15 @@ bot.hears("/myleaves", (ctx) =>{
   ctx.reply(leaveLog);
 })
 
-bot.hears("/unleave", (ctx) =>{
+/*bot.hears("/unleave", (ctx) =>{
   ctx.reply(`Removed last leave.`);
   leaveLog.pop()
-})
+}) this function removes last leave only*/
+
+bot.hears("/unleave", (ctx) =>{
+  ctx.reply(`Removed last leave.`);
+  leaveLog.splice(1,leaveLog.length);
+});
 
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
