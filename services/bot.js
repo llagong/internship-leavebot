@@ -15,6 +15,7 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 
 bot.hears("test", (ctx) => {
   console.log(ctx.update);
+  console.log(ctx.update.message.from.first_name);
 });
 
 bot.hears("hello", (ctx) => {
