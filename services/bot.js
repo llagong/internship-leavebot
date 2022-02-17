@@ -26,9 +26,21 @@ bot.hears("date", (ctx) => {
   ctx.reply(dateNow)
 });
 
+<<<<<<< HEAD
 bot.hears("/leave", (ctx) =>{
   ctx.reply(dateNow);
   leaveLog.push('userid')
   console.log(leaveLog);
 })
+=======
+bot.hears("hello", (ctx) => {
+  ctx.reply("world");
+});
+
+// /leave [Date]
+// /myleave
+// /unleave
+// /allleaves
+
+>>>>>>> 8b386de568c26b6621700d92557daa0ab16e8585
 bot.launch();
