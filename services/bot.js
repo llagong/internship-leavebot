@@ -36,23 +36,20 @@ bot.hears("/leave", (ctx) =>{
 const leaveLog = [`List of leaves from Ameer Fernandez`];
 
 bot.hears("/myleaves", (ctx) =>{
-  ctx.reply(leaveLog);
+  ctx.reply(leaveLog.filter(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
 })
 
-/*bot.hears("/unleave", (ctx) =>{
-  ctx.reply(`Removed last leave.`);
-  leaveLog.pop()
-}) this function removes last leave only*/
-
 bot.hears("/unleave", (ctx) =>{
-  ctx.reply(`Removed last leave.`);
-  leaveLog.splice(1,leaveLog.length);
+  ctx.reply(leaveLog.splice(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
+  
 });
-
+bot.hears("/allleaves", (ctx) =>{
+   ctx.reply(leaveLog);
+  
+});
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
 });
-
 // /leave [Date]
 // /myleave
 // /unleave
