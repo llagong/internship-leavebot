@@ -51,7 +51,47 @@ let leaveUpdateFrom = ctx.update.message.from;
 
 const leaveLog = [];
 
-const leaveLog = [`List of leaves `];
+
+bot.command(`/leave`, (ctx) =>{    
+    
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leaveID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timestamp: dateNow,
+  };
+  let textInput = ctx.update.message.text;
+
+  if(textInput === '/leave') {
+    leaveLog.push(leaveID)
+    console.log(leaveLog)
+  }else {
+    leaveID.timestamp = textInput.substring(7, textInput.length);
+    leaveLog.push(leaveID);
+    console.log(leaveLog)
+  }
+
+  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
+});
+
+const leaveLog = [];
+
+//made to check myleaves can add leave with different name
+bot.command("/adduser", (ctx) =>{
+  let textInput = ctx.update.message.text;
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leaveID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timestamp: dateNow,
+  };
+  leaveID.name = textInput.substring(9, textInput.length);
+    leaveLog.push(leaveID);
+    console.log(ctx.update);
+    console.log(leaveLog);
+});
 
 bot.hears("/myleaves", (ctx) =>{
   let leaveUpdateFrom = ctx.update.message.from;
@@ -67,28 +107,18 @@ bot.hears("/myleaves", (ctx) =>{
 })
 
 bot.hears("/unleave", (ctx) =>{
-  let userId = ctx.update.message.from.id;
-
-  allLeaves = allLeaves.filter((people) => { 
-    if (people.id !==userID){
-      return true;
-    } else {
-      return false;
-    }
-  });
-
-  ctx.reply("Leave cancelled for " + ctx.update.message.from.first_name)
+  ctx.reply(leaveLog.splice(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
+  
 });
 
-bot.hears("/allleaves", (ctx) =>{
-   let message = "";
-
-   for (let i = 0; i < allLeaves.length; i++){
-    let readableTimestamp = new Date(presentPeople[i].timestamp).toDateString();
-
-     message = message + allLeaves[i].name + "" + readableTimestamp + "\n";
-   }
-  ctx.reply(message)
+bot.hears("/allleaves", (ctx) => {
+  
+  let list = 'List of leaves \n';
+  for(let i = 0; i < leaveLog.length; i++) {
+    list = list + leaveLog[i].name + ': '+ leaveLog[i].timestamp + ' \n';
+  }
+  ctx.reply(list);
+  
 });
 
 bot.hears("hello", (ctx) => {
