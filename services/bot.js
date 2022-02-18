@@ -11,6 +11,8 @@ const d = new Date();
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
 
+
+
 bot.help((ctx) => ctx.reply("Help is on the way"));
 bot.on("sticker", (ctx) => ctx.reply("👍"));
 
@@ -118,6 +120,8 @@ bot.hears("/unleave", (ctx) =>{
   ctx.reply("Leave cancelled for " + ctx.update.message.from.first_name)
 });
 
+  
+
 bot.hears("/allleaves", (ctx) => {
   
   let list = 'List of leaves \n';
@@ -127,6 +131,31 @@ bot.hears("/allleaves", (ctx) => {
   ctx.reply(list);
   
 });
+bot.command(`/timein`, (ctx) =>{    
+    
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leaveID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timestamp: timeNow,
+  };
+  let textInput = ctx.update.message.text;
+
+  if(textInput === '/leave') {
+    leaveLog.push(leaveID)
+    console.log(leaveLog)
+  }else {
+    leaveID.timestamp = textInput.substring(7, textInput.length);
+    leaveLog.push(leaveID);
+    console.log(leaveLog)
+  }
+
+  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
+});
+
+
+
 
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
