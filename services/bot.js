@@ -27,6 +27,29 @@ bot.hears("date", (ctx) => {
   ctx.reply(dateNow)
 });
 
+bot.command(`/leave`, (ctx) =>{    
+let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leaveID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timestamp: dateNow,
+  };
+  let textInput = ctx.update.message.text;
+
+  if(textInput === '/leave') {
+    leaveLog.push(leaveID)
+    console.log(leaveLog)
+  }else {
+    leaveID.timestamp = textInput.substring(7, textInput.length);
+    leaveLog.push(leaveID);
+    console.log(leaveLog)
+  }
+
+  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
+});
+
+const leaveLog = [];
 
 const leaveLog = [`List of leaves `];
 
