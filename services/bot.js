@@ -27,16 +27,20 @@ bot.hears("date", (ctx) => {
   ctx.reply(dateNow)
 });
 
-bot.hears("/leave", (ctx) =>{
-  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`);
-  leaveLog.push(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`);
-  console.log(leaveLog);
-})
 
 const leaveLog = [`List of leaves `];
 
 bot.hears("/myleaves", (ctx) =>{
-  ctx.reply(leaveLog.filter(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;
+  let leavesList = 'List of leaves from ' + userName + '\n';
+  for(let i = 0; i < leaveLog.length; i++) {
+    if (leaveLog[i].name === userName){
+      leavesList = leavesList + leaveLog[i].name + ': '+ leaveLog[i].timestamp + ' \n';
+    } 
+  } 
+  ctx.reply(leavesList);
+  console.log(leaveLog)
 })
 
 bot.hears("/unleave", (ctx) =>{
@@ -63,6 +67,7 @@ bot.hears("/allleaves", (ctx) =>{
    }
   ctx.reply(message)
 });
+
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
 });
