@@ -33,19 +33,35 @@ bot.hears("/leave", (ctx) =>{
   console.log(leaveLog);
 })
 
-const leaveLog = [`List of leaves from Ameer Fernandez`];
+const leaveLog = [`List of leaves `];
 
 bot.hears("/myleaves", (ctx) =>{
   ctx.reply(leaveLog.filter(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
 })
 
 bot.hears("/unleave", (ctx) =>{
-  ctx.reply(leaveLog.splice(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
-  
+  let userId = ctx.update.message.from.id;
+
+  allLeaves = allLeaves.filter((people) => { 
+    if (people.id !==userID){
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  ctx.reply("Leave cancelled for " + ctx.update.message.from.first_name)
 });
+
 bot.hears("/allleaves", (ctx) =>{
-   ctx.reply(leaveLog);
-  
+   let message = "";
+
+   for (let i = 0; i < allLeaves.length; i++){
+    let readableTimestamp = new Date(presentPeople[i].timestamp).toDateString();
+
+     message = message + allLeaves[i].name + "" + readableTimestamp + "\n";
+   }
+  ctx.reply(message)
 });
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
