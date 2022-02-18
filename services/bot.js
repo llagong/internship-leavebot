@@ -49,7 +49,7 @@ let leaveUpdateFrom = ctx.update.message.from;
   ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
 });
 
-const leaveLog = [];
+let leaveLog = [];
 
 
 bot.command(`/leave`, (ctx) =>{    
@@ -74,8 +74,6 @@ bot.command(`/leave`, (ctx) =>{
 
   ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
 });
-
-const leaveLog = [];
 
 //made to check myleaves can add leave with different name
 bot.command("/adduser", (ctx) =>{
@@ -109,8 +107,8 @@ bot.hears("/myleaves", (ctx) =>{
 bot.hears("/unleave", (ctx) =>{
   let userId = ctx.update.message.from.id;
 
-  allLeaves = allLeaves.filter((people) => {
-    if (people.id !==userID){
+  leaveLog = leaveLog.filter((people) => {
+    if (people.id !== userId){
       return true;
     } else{
       return false;
