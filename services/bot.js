@@ -27,26 +27,77 @@ bot.hears("date", (ctx) => {
   ctx.reply(dateNow)
 });
 
-bot.hears("/leave", (ctx) =>{
-  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`);
-  leaveLog.push(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`);
-  console.log(leaveLog);
-})
 
-const leaveLog = [`List of leaves from Ameer Fernandez`];
+
+bot.command(`/leave`, (ctx) =>{    
+    
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leaveID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timestamp: dateNow,
+  };
+  let textInput = ctx.update.message.text;
+
+  if(textInput === '/leave') {
+    leaveLog.push(leaveID)
+    console.log(leaveLog)
+  }else {
+    leaveID.timestamp = textInput.substring(7, textInput.length);
+    leaveLog.push(leaveID);
+    console.log(leaveLog)
+  }
+
+  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
+});
+
+const leaveLog = [];
+
+//made to check myleaves can add leave with different name
+bot.command("/adduser", (ctx) =>{
+  let textInput = ctx.update.message.text;
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leaveID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timestamp: dateNow,
+  };
+  leaveID.name = textInput.substring(9, textInput.length);
+    leaveLog.push(leaveID);
+    console.log(ctx.update);
+    console.log(leaveLog);
+});
 
 bot.hears("/myleaves", (ctx) =>{
-  ctx.reply(leaveLog.filter(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;
+  let leavesList = 'List of leaves from ' + userName + '\n';
+  for(let i = 0; i < leaveLog.length; i++) {
+    if (leaveLog[i].name === userName){
+      leavesList = leavesList + leaveLog[i].name + ': '+ leaveLog[i].timestamp + ' \n';
+    } 
+  } 
+  ctx.reply(leavesList);
+  console.log(leaveLog)
 })
 
 bot.hears("/unleave", (ctx) =>{
   ctx.reply(leaveLog.splice(log => log == `${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${dateNow}`));
   
 });
-bot.hears("/allleaves", (ctx) =>{
-   ctx.reply(leaveLog);
+
+bot.hears("/allleaves", (ctx) => {
+  
+  let list = 'List of leaves \n';
+  for(let i = 0; i < leaveLog.length; i++) {
+    list = list + leaveLog[i].name + ': '+ leaveLog[i].timestamp + ' \n';
+  }
+  ctx.reply(list);
   
 });
+
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
 });
