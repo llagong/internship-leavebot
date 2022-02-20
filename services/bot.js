@@ -53,30 +53,6 @@ let leaveUpdateFrom = ctx.update.message.from;
 
 let leaveLog = [];
 
-
-bot.command(`/leave`, (ctx) =>{    
-    
-  let leaveUpdateFrom = ctx.update.message.from;
-  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
-  let leaveID = {
-    name: userName,
-    id: leaveUpdateFrom.id,
-    timestamp: dateNow,
-  };
-  let textInput = ctx.update.message.text;
-
-  if(textInput === '/leave') {
-    leaveLog.push(leaveID)
-    console.log(leaveLog)
-  }else {
-    leaveID.timestamp = textInput.substring(7, textInput.length);
-    leaveLog.push(leaveID);
-    console.log(leaveLog)
-  }
-
-  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
-});
-
 //made to check myleaves can add leave with different name
 bot.command("/adduser", (ctx) =>{
   let textInput = ctx.update.message.text;
@@ -131,31 +107,97 @@ bot.hears("/allleaves", (ctx) => {
   ctx.reply(list);
   
 });
-bot.command(`/timein`, (ctx) =>{    
+
+
+
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
+bot.command(`/timelog`, (ctx) =>{
+  console.log(timeLog)
+});
+
+bot.command(`/timein`, (ctx) =>{
     
-  let leaveUpdateFrom = ctx.update.message.from;
-  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
-  let leaveID = {
+  let timeUpdateFrom = ctx.update.message.from;
+  let userName = ctx.update.message.from.first_name + ' ' +ctx.update.message.from.last_name;  
+  let timeID = {
     name: userName,
-    id: leaveUpdateFrom.id,
-    timestamp: timeNow,
+    id: ctx.message.from.id,
+    timeinStamp:0,
+    timeoutStamp: '',
+  };
+
+  console.log(ctx.update.message.from.id)
+ 
+  
+  let timeLogFilter = '';
+  
+  if(timeLogFilter = 'betlog') {
+    timeID.timeinStamp = timeNow;
+    ctx.reply(`${userName} has logged in at ${d.getHours()}:${d.getMinutes()}.`)
+    timeLogFilter = timeLog.filter(log => log.name === userName);
+    timeLog.push(timeID)
+    console.log(timeLogFilter)
+  }else if (timeLogFilter) {    
+  
+    console.log(timeLog)
+    ctx.reply(`${userName} has already logged in at ${timeID.timeinStamp}.`)
+    console.log(timeLog)
+  } else{
+    console.log('timlog not read')
+  }
+  console.log(ctx.update.message.from.first_name)
+  console.log(timeLogFilter)
+  
+});
+
+let timeLog = [];
+
+bot.command(`/timeout`, (ctx) =>{    
+    
+  let timeUpdateFrom = ctx.update.message.from;
+  let userName = ctx.update.message.from.first_name + ' '+ctx.update.message.from.last_name;  
+  let timeID = {
+    name: userName,
+    id: ctx.message.from.id,
+    timeinStamp:'',
+    timeoutStamp: 'apples',
   };
   let textInput = ctx.update.message.text;
 
-  if(textInput === '/leave') {
-    leaveLog.push(leaveID)
-    console.log(leaveLog)
+  if(timeID.timeinStamp === false) {
+    timeID.timeinStamp = timeNow;
+    ctx.reply(`${userName} has logged in at ${d.getHours()}:${d.getMinutes()}.`)
+    timeLog.push(timeID)
+    console.log(timeLog)
   }else {
-    leaveID.timestamp = textInput.substring(7, textInput.length);
-    leaveLog.push(leaveID);
-    console.log(leaveLog)
+    ctx.reply(`${userName} has already logged in at ${timeID.timeinStamp}.`)
+    console.log(timeLog)
   }
 
-  ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} : ${leaveID.timestamp}`);
 });
 
 
 
+/* trying out something
+
+bot.command(`dink`, (ctx) => {
+  bot.telegram.sendPoll(ctx.chat.id, 'Hello',
+  {
+    reply_markup: {
+      inline_keyboard: [
+        [
+            {text:'Click me', callback_data: 'one'}
+        ]
+      ]
+    }
+  })
+
+})
+//try bot.on
+bot.action('one', ctx =>{
+  ctx.answerCbQuery('dinkdonk')
+  ctx.reply('you clicky button')
+})*/
 
 bot.hears("hello", (ctx) => {
   ctx.reply("world");
