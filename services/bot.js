@@ -115,6 +115,120 @@ bot.command(`/timelog`, (ctx) =>{
   console.log(timeLog)
 });
 
+const timePresent = [];
+let timeLog = [];
+
+bot.command(`timein`, (ctx) =>{    
+    let leaveUpdateFrom = ctx.update.message.from;
+    let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+    let timeID = {
+      name: userName,
+      id: leaveUpdateFrom.id,
+      timein: '',
+      timeout: '',
+    };
+  
+    timeID.timein = timeNow;
+    timeLog.push(timeID);
+    timePresent.push(timeID);
+    console.log(timeLog);
+    console.log(timePresent[0].name)
+  
+    ctx.reply(`${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name} has logged in at ${timeNow}`);
+  });
+
+bot.command(`present`, (ctx) =>{  
+  let list = 'List of Present \n';
+  for(let i = 0; i < timePresent.length; i++) {
+    list = list + timePresent[i].name + ': '+ timePresent[i].timein + ' \n';
+  }
+  ctx.reply(list);
+  console.log(timePresent)
+})
+
+bot.command(`timeout`, (ctx) =>{  
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
+  
+  console.log(timePresent[0].name)
+  
+  for(let i = 0; i < timePresent.length; i++) {
+    if (timePresent[i].name === userName){
+      console.log(timePresent[i])  
+      timePresent.splice(i,1)
+      console.log(timePresent)
+    } 
+  }
+  console.log(timeLog[0].timein.split(' '))
+  console.log(`'${d.getMonth()+1}/${d.getDate()}'`)
+  for(let i = 0; i < timeLog.length; i++) {
+    if (timeLog[i].timein.split(" ")[0] === `${d.getMonth()+1}/${d.getDate()}`){
+      console.log(timeLog[i])  
+      timeLog[i].timeout = timeNow
+      console.log(timeLog[i])
+      console.log(timeLog)
+    } 
+  }
+  ctx.reply(`${userName} has logged off for the day.`)
+})
+
+//returns last ten logs
+bot.command('logs', (ctx) =>{
+  let timeLog10 = timeLog;
+  console.log(timeLog.length>3)
+  if(timeLog.length>2){
+  for(let i = 0; i>=timeLog10.length-3; i++){
+    timeLog10.pop()
+  }}
+  
+  let list = 'List of logs \n';
+  console.log(timeLog10)
+  for(let i = 0; i < timeLog10.length; i++) {
+    
+    list = list + timeLog10[i].name + ': '+ timeLog10[i].timein+' ' +timeLog10[i].timeout.split(' ')[2] + ' \n';
+    
+  }
+  ctx.reply(list);
+})
+
+bot.command("/adduser1", (ctx) =>{
+  let textInput = ctx.update.message.text;
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let timeID = {
+    name: userName,
+    id: leaveUpdateFrom.id,
+    timein: timeNow,
+    timeout: timeNow
+  };
+  timeID.name = textInput.substring(10, textInput.length);
+    timeLog.push(timeID);
+    console.log(ctx.update);
+    console.log(timeLog);
+});
+
+bot.command('mylogs', (ctx) =>{
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
+  let list = 'List of logs \n';
+  for(let i = 0; i < timeLog.length; i++) {
+    if(timeLog[i].name === userName){
+    console.log(timeLog[i].timeout.split(' ')[2])
+    list = list + timeLog[i].name + ': '+ timeLog[i].timein+' ' +timeLog[i].timeout.split(' ')[2] + ' \n';
+  }
+}
+  ctx.reply(list);
+})
+//returns all logs
+bot.command('alllogs', (ctx) =>{
+  let list = 'List of logs \n';
+  for(let i = 0; i < timeLog.length; i++) {
+    console.log(timeLog[i].timeout.split(' ')[2])
+    list = list + timeLog[i].name + ': '+ timeLog[i].timein+' ' +timeLog[i].timeout.split(' ')[2] + ' \n';
+  }
+  ctx.reply(list);
+})
+/*
 bot.command(`/timein`, (ctx) =>{
     
   let timeUpdateFrom = ctx.update.message.from;
