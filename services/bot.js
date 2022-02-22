@@ -7,9 +7,7 @@ bot.start((ctx) => ctx.reply("Welcome"));
 
 
 
-const d = new Date();
-const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+
 
 
 
@@ -17,8 +15,13 @@ bot.help((ctx) => ctx.reply("Help is on the way"));
 bot.on("sticker", (ctx) => ctx.reply("👍"));
 
 bot.hears("test", (ctx) => {
+  let d = new Date()
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   console.log(ctx.update);
   console.log(ctx.update.message.from.first_name);
+  console.log(d)
 });
 
 bot.hears("hello", (ctx) => {
@@ -29,7 +32,10 @@ bot.hears("date", (ctx) => {
   ctx.reply(dateNow)
 });
 
-bot.command(`/leave`, (ctx) =>{    
+bot.command(`/leave`, (ctx) =>{  
+  let d = new Date()
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`  
 let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
   let leaveID = {
@@ -55,6 +61,9 @@ let leaveLog = [];
 
 //made to check myleaves can add leave with different name
 bot.command("/adduser", (ctx) =>{
+  let d = new Date()
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
   let textInput = ctx.update.message.text;
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
@@ -110,7 +119,6 @@ bot.hears("/allleaves", (ctx) => {
 
 
 
-const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
 bot.command(`/timelog`, (ctx) =>{
   console.log(timeLog)
 });
@@ -118,7 +126,11 @@ bot.command(`/timelog`, (ctx) =>{
 const timePresent = [];
 let timeLog = [];
 
-bot.command(`timein`, (ctx) =>{    
+bot.command(`timein`, (ctx) =>{ 
+  let d = new Date()
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`   
     let leaveUpdateFrom = ctx.update.message.from;
     let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
     let timeID = {
@@ -147,10 +159,13 @@ bot.command(`present`, (ctx) =>{
 })
 
 bot.command(`timeout`, (ctx) =>{  
+  let d = new Date()
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
   
-  console.log(timePresent[0].name)
   
   for(let i = 0; i < timePresent.length; i++) {
     if (timePresent[i].name === userName){
@@ -159,7 +174,7 @@ bot.command(`timeout`, (ctx) =>{
       console.log(timePresent)
     } 
   }
-  console.log(timeLog[0].timein.split(' '))
+  
   console.log(`'${d.getMonth()+1}/${d.getDate()}'`)
   for(let i = 0; i < timeLog.length; i++) {
     if (timeLog[i].timein.split(" ")[0] === `${d.getMonth()+1}/${d.getDate()}`){
@@ -173,15 +188,14 @@ bot.command(`timeout`, (ctx) =>{
 })
 
 //returns last ten logs
-bot.command('logs', (ctx) =>{
+bot.command('logbook', (ctx) =>{
   let timeLog10 = timeLog;
-  console.log(timeLog.length>3)
-  if(timeLog.length>2){
-  for(let i = 0; i>=timeLog10.length-3; i++){
-    timeLog10.pop()
-  }}
+  console.log(timeLog.length>2)
+  if(timeLog.length>9){
+    timeLog10=timeLog.slice(timeLog.length-11, timeLog.length-1)
+  }
   
-  let list = 'List of logs \n';
+  let list = 'Last 10 logs \n';
   console.log(timeLog10)
   for(let i = 0; i < timeLog10.length; i++) {
     
@@ -192,6 +206,10 @@ bot.command('logs', (ctx) =>{
 })
 
 bot.command("/adduser1", (ctx) =>{
+  let d = new Date()
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   let textInput = ctx.update.message.text;
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
@@ -228,97 +246,18 @@ bot.command('alllogs', (ctx) =>{
   }
   ctx.reply(list);
 })
-/*
-bot.command(`/timein`, (ctx) =>{
-    
-  let timeUpdateFrom = ctx.update.message.from;
-  let userName = ctx.update.message.from.first_name + ' ' +ctx.update.message.from.last_name;  
-  let timeID = {
-    name: userName,
-    id: ctx.message.from.id,
-    timeinStamp:0,
-    timeoutStamp: '',
-  };
 
-  console.log(ctx.update.message.from.id)
- 
-  
-  let timeLogFilter = '';
-  
-  if(timeLogFilter = 'betlog') {
-    timeID.timeinStamp = timeNow;
-    ctx.reply(`${userName} has logged in at ${d.getHours()}:${d.getMinutes()}.`)
-    timeLogFilter = timeLog.filter(log => log.name === userName);
-    timeLog.push(timeID)
-    console.log(timeLogFilter)
-  }else if (timeLogFilter) {    
-  
-    console.log(timeLog)
-    ctx.reply(`${userName} has already logged in at ${timeID.timeinStamp}.`)
-    console.log(timeLog)
-  } else{
-    console.log('timlog not read')
-  }
-  console.log(ctx.update.message.from.first_name)
-  console.log(timeLogFilter)
-  
-});
-
-let timeLog = [];
-
-bot.command(`/timeout`, (ctx) =>{    
-    
-  let timeUpdateFrom = ctx.update.message.from;
-  let userName = ctx.update.message.from.first_name + ' '+ctx.update.message.from.last_name;  
-  let timeID = {
-    name: userName,
-    id: ctx.message.from.id,
-    timeinStamp:'',
-    timeoutStamp: 'apples',
-  };
-  let textInput = ctx.update.message.text;
-
-  if(timeID.timeinStamp === false) {
-    timeID.timeinStamp = timeNow;
-    ctx.reply(`${userName} has logged in at ${d.getHours()}:${d.getMinutes()}.`)
-    timeLog.push(timeID)
-    console.log(timeLog)
-  }else {
-    ctx.reply(`${userName} has already logged in at ${timeID.timeinStamp}.`)
-    console.log(timeLog)
-  }
-
-});
-
-
-
-/* trying out something
-
-bot.command(`dink`, (ctx) => {
-  bot.telegram.sendPoll(ctx.chat.id, 'Hello',
-  {
-    reply_markup: {
-      inline_keyboard: [
-        [
-            {text:'Click me', callback_data: 'one'}
-        ]
-      ]
-    }
-  })
-
-})
-//try bot.on
-bot.action('one', ctx =>{
-  ctx.answerCbQuery('dinkdonk')
-  ctx.reply('you clicky button')
-})*/
-
-bot.hears("hello", (ctx) => {
+bot.hears("/hello", (ctx) => {
   ctx.reply("world");
+  let dd = new Date()
+  console.log(dd.getSeconds())
+  console.log(timeNow + d.getSeconds())
 });
 // /leave [Date]
 // /myleave
 // /unleave
 // /allleaves
+
+
 
 bot.launch();
