@@ -245,12 +245,6 @@ bot.command('alllogs', (ctx) =>{
     list = list + timeLog[i].name + ': '+ timeLog[i].timein+' ' +timeLog[i].timeout.split(' ')[2] + ' \n';
   }
   ctx.reply(list);
-<<<<<<< HEAD
-=======
-
-bot.hears("hello", (ctx) => {
-  ctx.reply("world");
->>>>>>> parent of 75c00f5 (logs fixed)
 });
 
   bot.hears("hello", (ctx) => {
