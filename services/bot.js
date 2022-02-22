@@ -227,6 +227,16 @@ bot.command('alllogs', (ctx) =>{
     list = list + timeLog[i].name + ': '+ timeLog[i].timein+' ' +timeLog[i].timeout.split(' ')[2] + ' \n';
   }
   ctx.reply(list);
+
+bot.hears("hello", (ctx) => {
+  ctx.reply("world");
+});
+// /leave [Date]
+// /myleave
+// /unleave
+// /allleaves
+
+bot.launch();
 })
 /*
 bot.command(`/timein`, (ctx) =>{
@@ -291,6 +301,7 @@ bot.command(`/timeout`, (ctx) =>{
 });
 
 
+<<<<<<< Updated upstream
 
 /* trying out something
 
@@ -313,12 +324,4 @@ bot.action('one', ctx =>{
   ctx.reply('you clicky button')
 })*/
 
-bot.hears("hello", (ctx) => {
-  ctx.reply("world");
-});
-// /leave [Date]
-// /myleave
-// /unleave
-// /allleaves
 
-bot.launch();
