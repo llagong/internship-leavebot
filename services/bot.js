@@ -245,119 +245,14 @@ bot.command('alllogs', (ctx) =>{
     list = list + timeLog[i].name + ': '+ timeLog[i].timein+' ' +timeLog[i].timeout.split(' ')[2] + ' \n';
   }
   ctx.reply(list);
-<<<<<<< HEAD
-  
+});
+
   bot.hears("hello", (ctx) => {
     ctx.reply("world");
-  })
-}
+  });
 
 
-=======
-})
-
-bot.hears("/hello", (ctx) => {
-  ctx.reply("world");
-  let dd = new Date()
-  console.log(dd.getSeconds())
-  console.log(timeNow + d.getSeconds())
-});
->>>>>>> 75c00f5ebd888e1a5742302d6f74cdec919e27cf
 // /leave [Date]
 // /myleave
 // /unleave
 // /allleaves
-
-
-<<<<<<< HEAD
-/*
-bot.command(`/timein`, (ctx) =>{
-    
-  let timeUpdateFrom = ctx.update.message.from;
-  let userName = ctx.update.message.from.first_name + ' ' +ctx.update.message.from.last_name;  
-  let timeID = {
-    name: userName,
-    id: ctx.message.from.id,
-    timeinStamp:0,
-    timeoutStamp: '',
-  };
-
-  console.log(ctx.update.message.from.id)
- 
-  
-  let timeLogFilter = '';
-  
-  if(timeLogFilter = 'betlog') {
-    timeID.timeinStamp = timeNow;
-    ctx.reply(`${userName} has logged in at ${d.getHours()}:${d.getMinutes()}.`)
-    timeLogFilter = timeLog.filter(log => log.name === userName);
-    timeLog.push(timeID)
-    console.log(timeLogFilter)
-  }else if (timeLogFilter) {    
-  
-    console.log(timeLog)
-    ctx.reply(`${userName} has already logged in at ${timeID.timeinStamp}.`)
-    console.log(timeLog)
-  } else{
-    console.log('timlog not read')
-  }
-  console.log(ctx.update.message.from.first_name)
-  console.log(timeLogFilter)
-  
-});
-
-let timeLog = [];
-
-bot.command(`/timeout`, (ctx) =>{    
-    
-  let timeUpdateFrom = ctx.update.message.from;
-  let userName = ctx.update.message.from.first_name + ' '+ctx.update.message.from.last_name;  
-  let timeID = {
-    name: userName,
-    id: ctx.message.from.id,
-    timeinStamp:'',
-    timeoutStamp: 'apples',
-  };
-  let textInput = ctx.update.message.text;
-
-  if(timeID.timeinStamp === false) {
-    timeID.timeinStamp = timeNow;
-    ctx.reply(`${userName} has logged in at ${d.getHours()}:${d.getMinutes()}.`)
-    timeLog.push(timeID)
-    console.log(timeLog)
-  }else {
-    ctx.reply(`${userName} has already logged in at ${timeID.timeinStamp}.`)
-    console.log(timeLog)
-  }
-
-});
-
-
-<<<<<<< Updated upstream
-
-/* trying out something
-
-bot.command(`dink`, (ctx) => {
-  bot.telegram.sendPoll(ctx.chat.id, 'Hello',
-  {
-    reply_markup: {
-      inline_keyboard: [
-        [
-            {text:'Click me', callback_data: 'one'}
-        ]
-      ]
-    }
-  })
-
-})
-//try bot.on
-bot.action('one', ctx =>{
-  ctx.answerCbQuery('dinkdonk')
-  ctx.reply('you clicky button')
-})*/
-
-
-=======
-
-bot.launch();
->>>>>>> 75c00f5ebd888e1a5742302d6f74cdec919e27cf
