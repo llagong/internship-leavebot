@@ -256,9 +256,5 @@ bot.command('alllogs', (ctx) =>{
 // /myleave
 // /unleave
 // /allleaves
-<<<<<<< HEAD
-=======
 
 bot.launch();
-})
->>>>>>> parent of 75c00f5 (logs fixed)
