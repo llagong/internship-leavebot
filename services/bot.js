@@ -245,19 +245,14 @@ bot.command('alllogs', (ctx) =>{
     list = list + timeLog[i].name + ': '+ timeLog[i].timein+' ' +timeLog[i].timeout.split(' ')[2] + ' \n';
   }
   ctx.reply(list);
-})
 
-bot.hears("/hello", (ctx) => {
+bot.hears("hello", (ctx) => {
   ctx.reply("world");
-  let dd = new Date()
-  console.log(dd.getSeconds())
-  console.log(timeNow + d.getSeconds())
 });
 // /leave [Date]
 // /myleave
 // /unleave
 // /allleaves
 
-
-
 bot.launch();
+})
