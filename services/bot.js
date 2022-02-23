@@ -123,7 +123,7 @@ bot.hears("/trackb",(ctx) => {
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
   let leavesList = 'List of leaves from ' + userName + '\n';
 
-  leaveLog.filter(console.log((people) => {
+  leaveLog.filter((people) => { console.log(people)
     if (people.id == userId){
       leavesList = leavesList + ': '+ leaveLog.name + ': '+ leaveLog.timestamp + ' \n';
       return true;
@@ -131,7 +131,7 @@ bot.hears("/trackb",(ctx) => {
     else{
       return false;
     }
-  }));
+  });
   ctx.reply(leavesList);
   });
 
@@ -178,22 +178,30 @@ bot.command(`present`, (ctx) =>{
 
 bot.command(`timeout`, (ctx) =>{  
   let d = new Date()
-  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
-  let nameArrayLog = [];
+  
   
   for(let i = 0; i < timePresent.length; i++) {
     if (timePresent[i].name === userName){
-      nameArrayLog.push(i)
+      console.log(timePresent[i])  
+      timePresent.splice(i,1)
+      console.log(timePresent)
     } 
   }
-  console.log(nameArrayLog)
-  console.log(Math.max(...nameArrayLog));
-  timeLog[Math.max(...nameArrayLog)].timeout = timeNow;
-  console.log(timeLog)
   
+  console.log(`'${d.getMonth()+1}/${d.getDate()}'`)
+  for(let i = 0; i < timeLog.length; i++) {
+    if (timeLog[i].timein.split(" ")[0] === `${d.getMonth()+1}/${d.getDate()}`){
+      console.log(timeLog[i])  
+      timeLog[i].timeout = timeNow
+      console.log(timeLog[i])
+      console.log(timeLog)
+    } 
+  }
   ctx.reply(`${userName} has logged off for the day.`)
 })
 
@@ -217,9 +225,9 @@ bot.command('logbook', (ctx) =>{
 
 bot.command("/adduser1", (ctx) =>{
   let d = new Date()
-  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
-  const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   let textInput = ctx.update.message.text;
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
@@ -257,25 +265,14 @@ bot.command('alllogs', (ctx) =>{
   ctx.reply(list);
 });
 
-
-
-
   bot.hears("hello", (ctx) => {
     ctx.reply("world");
   });
-
 
 
 // /leave [Date]
 // /myleave
 // /unleave
 // /allleaves
-/**
- * /timein
- * /timeout
- * /logs returns last 10 logs
- * /alllogs list of all logs
- * /mylogs list of all logs of user only
- */
 
 bot.launch();
