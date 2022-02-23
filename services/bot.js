@@ -123,7 +123,7 @@ bot.command(`/timelog`, (ctx) =>{
   console.log(timeLog)
 });
 
-const timePresent = [];
+let timePresent = [];
 let timeLog = [];
 
 bot.command(`timein`, (ctx) =>{ 
@@ -166,17 +166,26 @@ bot.command(`timeout`, (ctx) =>{
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
   let nameArrayLog = [];
   
+  if (timePresent[0]){
   for(let i = 0; i < timePresent.length; i++) {
     if (timePresent[i].name === userName){
       nameArrayLog.push(i)
     } 
-  }
-  console.log(nameArrayLog)
+    console.log(nameArrayLog)
   console.log(Math.max(...nameArrayLog));
   timeLog[Math.max(...nameArrayLog)].timeout = timeNow;
   console.log(timeLog)
-  
   ctx.reply(`${userName} has logged off for the day.`)
+  }} else {
+    ctx.reply(`${userName} has not logged yet`)
+  }
+  
+  for(let i = 0; i < timePresent.length; i++) {
+    if (timePresent[i].name === userName){
+      timePresent.splice(i,1)
+    } 
+  }
+  
 })
 
 //returns last ten logs
@@ -209,10 +218,11 @@ bot.command("/adduser1", (ctx) =>{
     name: userName,
     id: leaveUpdateFrom.id,
     timein: timeNow,
-    timeout: timeNow
+    timeout: ''
   };
   timeID.name = textInput.substring(10, textInput.length);
     timeLog.push(timeID);
+    timePresent.push(timeID)
     console.log(ctx.update);
     console.log(timeLog);
 });
@@ -241,6 +251,31 @@ bot.command('alllogs', (ctx) =>{
 
 
 
+bot.command(`clearlog`, (ctx) =>{  
+  let d = new Date()
+  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
+  
+  timePresent = timePresent.filter(word =>{
+    if(word.timeout){
+      return true
+    } else {
+      return false
+    }
+  })
+
+  timeLog = timeLog.filter(word =>{
+    if(word.timeout && word.name === userName){
+      return true
+    } else {
+      return false
+    }
+  })
+  ctx.reply(`${userName} removed logs without timeout`)
+  console.log(timePresent[0])
+})
 
   bot.hears("hello", (ctx) => {
     ctx.reply("world");
