@@ -125,7 +125,7 @@ bot.hears("/trackb",(ctx) => {
 
   leaveLog.filter((people) => { console.log(people)
     if (people.id == userId){
-      leavesList = leavesList + ': '+ leaveLog.name + ': '+ leaveLog.timestamp + ' \n';
+      leavesList = leavesList + ': '+ people.name + ': '+ people.timestamp + ' \n';
       return true;
     } 
     else{
