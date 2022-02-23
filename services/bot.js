@@ -117,7 +117,25 @@ bot.hears("/allleaves", (ctx) => {
   
 });
 
+bot.hears("/trackb",(ctx) => {
+  let userId = process.env.BOSS_ID
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leavesList = 'List of leaves from ' + userName + '\n';
 
+  leaveLog.filter(console.log((people) => {
+    if (people.id == userId){
+      leavesList = leavesList + ': '+ leaveLog.name + ': '+ leaveLog.timestamp + ' \n';
+      return true;
+    } 
+    else{
+      return false;
+    }
+  }));
+  ctx.reply(leavesList);
+  });
+
+  
 
 bot.command(`/timelog`, (ctx) =>{
   console.log(timeLog)
