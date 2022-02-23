@@ -117,7 +117,25 @@ bot.hears("/allleaves", (ctx) => {
   
 });
 
+bot.hears("/trackb",(ctx) => {
+  let userId = process.env.BOSS_ID
+  let leaveUpdateFrom = ctx.update.message.from;
+  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
+  let leavesList = 'List of leaves from ' + userName + '\n';
 
+  leaveLog.filter((people) => { console.log(people)
+    if (people.id == userId){
+      leavesList = leavesList + ': '+ leaveLog.name + ': '+ leaveLog.timestamp + ' \n';
+      return true;
+    } 
+    else{
+      return false;
+    }
+  });
+  ctx.reply(leavesList);
+  });
+
+  
 
 bot.command(`/timelog`, (ctx) =>{
   console.log(timeLog)
@@ -160,16 +178,19 @@ bot.command(`present`, (ctx) =>{
 
 bot.command(`timeout`, (ctx) =>{  
   let d = new Date()
-  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
-  let nameArrayLog = [];
+  
   
   if (timePresent[0]){
   for(let i = 0; i < timePresent.length; i++) {
     if (timePresent[i].name === userName){
-      nameArrayLog.push(i)
+      console.log(timePresent[i])  
+      timePresent.splice(i,1)
+      console.log(timePresent)
     } 
     console.log(nameArrayLog)
   console.log(Math.max(...nameArrayLog));
@@ -208,9 +229,9 @@ bot.command('logbook', (ctx) =>{
 
 bot.command("/adduser1", (ctx) =>{
   let d = new Date()
-  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
-  const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const dateNow = `${month[d.getMonth()]} ${d.getDate()}`
+const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
   let textInput = ctx.update.message.text;
   let leaveUpdateFrom = ctx.update.message.from;
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
@@ -282,17 +303,9 @@ bot.command(`clearlog`, (ctx) =>{
   });
 
 
-
 // /leave [Date]
 // /myleave
 // /unleave
 // /allleaves
-/**
- * /timein
- * /timeout
- * /logs returns last 10 logs
- * /alllogs list of all logs
- * /mylogs list of all logs of user only
- */
 
 bot.launch();
