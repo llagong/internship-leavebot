@@ -183,36 +183,29 @@ bot.command(`timeout`, (ctx) =>{
   let nameArrayLog = [];
   
   if (timePresent[0]){
-  for(let i = 0; i < timeLog.length; i++) {
-    if (timeLog[i].name === userName){
+  for(let i = 0; i < timePresent.length; i++) {
+    if (timePresent[i].name === userName){
       nameArrayLog.push(i)
-    }     
-  }
-  console.log(nameArrayLog)
+    } 
+    console.log(nameArrayLog)
   console.log(Math.max(...nameArrayLog));
   timeLog[Math.max(...nameArrayLog)].timeout = timeNow;
   console.log(timeLog)
   ctx.reply(`${userName} has logged off for the day.`)
-
+  }} else {
+    ctx.reply(`${userName} has not logged yet`)
+  }
+  
   for(let i = 0; i < timePresent.length; i++) {
-    if (timePresent[i].timeout){
+    if (timePresent[i].name === userName){
       timePresent.splice(i,1)
     } 
   }
-  console.log(timePresent)
-} else {
-    ctx.reply(`${userName} has not logged yet`)
-  }
-
- 
-  
-
-  
   
 })
 
 //returns last ten logs
-bot.command('log10', (ctx) =>{
+bot.command('logbook', (ctx) =>{
   let timeLog10 = timeLog;
   console.log(timeLog.length>2)
   if(timeLog.length>9){
@@ -274,7 +267,7 @@ bot.command('alllogs', (ctx) =>{
 
 
 
-bot.command(`clearlogs`, (ctx) =>{  
+bot.command(`clearlog`, (ctx) =>{  
   let d = new Date()
   const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const timeNow = `${d.getMonth()+1}/${d.getDate()}  ${d.getHours()}:${d.getMinutes()}`
@@ -282,7 +275,7 @@ bot.command(`clearlogs`, (ctx) =>{
   let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name; 
   
   timePresent = timePresent.filter(word =>{
-    if(word.timeout && word.name === userName){
+    if(word.timeout){
       return true
     } else {
       return false
@@ -311,21 +304,11 @@ bot.command(`clearlogs`, (ctx) =>{
 // /unleave
 // /allleaves
 /**
- * 
-Paste this into botfather for command list 
-
-leave -  Set leave for today. Add description to set leave date.
-unleave - Remove all leaves for user.
-myleaves - Show list of leaves from user.
-allleaves - Show list of all leaves.
-timein - Set time in log.
-timeout - Set time out log.
-present - Show list of all users who have timed in.
-log10 - Show list of last ten logs.
-alllogs - Show list of all logs.
-mylogs - Show list of user's logs.
-clearlogs - Clears the user's logs without a timeout.
-trackb - Di mo sure ano ginagawa nito.
+ * /timein
+ * /timeout
+ * /logs returns last 10 logs
+ * /alllogs list of all logs
+ * /mylogs list of all logs of user only
  */
 
 bot.launch();
