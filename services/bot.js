@@ -120,8 +120,7 @@ bot.hears("/allleaves", (ctx) => {
 bot.hears("/trackb",(ctx) => {
   let userId = process.env.BOSS_ID
   let leaveUpdateFrom = ctx.update.message.from;
-  let userName = leaveUpdateFrom.first_name + ' '+leaveUpdateFrom.last_name;  
-  let leavesList = 'List of leaves from ' + userName + '\n';
+  let leavesList = 'List of leaves from Boss ' + '\n';
 
   leaveLog.filter((people) => { console.log(people)
     if (people.id == userId){
